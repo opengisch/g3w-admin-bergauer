@@ -359,13 +359,26 @@ class DatasourceExists(QgisProjectLayerValidator):
                 Layer.TYPES.raster] and not isXML(self.qgisProjectLayer.datasource):
 
             # try PostGis raster layer
-            if self.qgisProjectLayer.datasource.startswith("PG:") or self.qgisProjectLayer.datasource.upper().startswith("MYSQL:"):
+            if self.qgisProjectLayer.datasource.startswith("PG:"):
 
                 # try to open postgis raster with gdal
                 raster = gdal.Open(self.qgisProjectLayer.datasource)
                 if raster is None:
                     err = ugettext('Cannot connect to Postgis raster layer {} '.format(
                         self.qgisProjectLayer.datasource))
+                    raise QgisProjectLayerException(err)
+
+            elif self.qgisProjectLayer.datasource.upper().startswith("MYSQL:"):
+
+                # try to open with gdal
+                ds_name, lyr_name = self.qgisProjectLayer.datasource.split('|')
+                datasource = ogr.Open(ds_name)
+                if datasource is None:
+                    err = ugettext('Cannot connect to Mysql layer {} '.format(ds_name))
+                    raise QgisProjectLayerException(err)
+                layer = datasource.GetLayer(lyr_name)
+                if datasource is None:
+                    err = ugettext('Connection successful, but can not find layer {} '.format(lyr_name))
                     raise QgisProjectLayerException(err)
 
             else:
