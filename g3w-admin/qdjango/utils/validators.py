@@ -365,7 +365,7 @@ class DatasourceExists(QgisProjectLayerValidator):
                 raster = gdal.Open(self.qgisProjectLayer.datasource)
                 if raster is None:
                     err = ugettext('Cannot connect to Postgis raster layer {} '.format(
-                        self.qgisProjectLayer.datasource))
+                        self.qgisProjectLayer.name))
                     raise QgisProjectLayerException(err)
 
             elif self.qgisProjectLayer.datasource.upper().startswith("MYSQL:"):
