@@ -359,7 +359,7 @@ class DatasourceExists(QgisProjectLayerValidator):
                 Layer.TYPES.raster] and not isXML(self.qgisProjectLayer.datasource):
 
             # try PostGis raster layer
-            if self.qgisProjectLayer.datasource.startswith("PG:"):
+            if self.qgisProjectLayer.datasource.startswith("PG:") or self.qgisProjectLayer.datasource.upper().startswith("MYSQL:"):
 
                 # try to open postgis raster with gdal
                 raster = gdal.Open(self.qgisProjectLayer.datasource)
