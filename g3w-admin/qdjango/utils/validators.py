@@ -12,7 +12,7 @@ import re
 from django.utils.translation import ugettext
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
-from osgeo import gdal
+from osgeo import gdal, ogr
 
 from core.utils.data import isXML
 from qdjango.models import Layer, Project
